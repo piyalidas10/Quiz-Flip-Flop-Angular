@@ -19,7 +19,8 @@ export class QuizcontainerDirective  {
 })
 
 export class QuizhomeComponent implements OnInit {
-  quizLists: any;
+  public quizLists: any;
+  public quizAnsLists = [];
 
   // @ViewChildren decorator to grab elements from the host view
   /* The return type of ViewChildren is QueryList.
@@ -57,6 +58,10 @@ export class QuizhomeComponent implements OnInit {
       }
   }
 
+  notifyAns(evt) {
+    console.log('Question Ans => ', evt);
+  }
+
   // ViewContainerRef — create templates or components dynamically
   public openComponent(index) {
     console.log(this.entry);
@@ -65,6 +70,11 @@ export class QuizhomeComponent implements OnInit {
       const myRef = this.entry.toArray()[index].viewContainerRef.createComponent(myFactory);
       myRef.instance['data'] = this.quizLists[index];
       myRef.instance['serialno'] = index;
+      myRef.instance['chooseVal'].subscribe(event => {
+        console.log('chooseVal => ', event);
+        this.quizAnsLists.push(event);
+        console.log('quizAnsLists => ', this.quizAnsLists);
+      });
       myRef.changeDetectorRef.detectChanges();
     }
   }
