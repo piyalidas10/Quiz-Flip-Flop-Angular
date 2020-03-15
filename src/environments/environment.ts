@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiEndpoint: 'https://raw.githubusercontent.com/xamarin/monodroid-samples/master/wear/Quiz/Quiz/Assets/Quiz.json'
 };
 
 /*
