@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { environment } from '../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { Quiz } from '../models/quiz';
+import { QuizModel } from '../models/quiz';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +19,7 @@ export class ApiService {
   setHeader() {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Ecommerce-version': '1.0.0'
+      'Access-Control-Allow-Origin': '*'
     });
     this.RQSTOptions = {
       // headers: this.headers,
@@ -28,9 +27,9 @@ export class ApiService {
     };
   }
 
-  getData(): Observable<Quiz> {
+  getData(): Observable<any> {
     const apiURL = `${environment.apiEndpoint}`;
-    return this.http.get(apiURL, this.RQSTOptions)
+    return this.http.get<any>(apiURL, this.RQSTOptions)
     .pipe(
       retry(2),
       catchError(this.handleError)

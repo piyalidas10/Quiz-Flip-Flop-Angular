@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'flipflop';
+  public isResultSubmitted = false;
+
+  checkIsSubmitted(evt) {
+    console.log('evt => ', evt);
+    if (evt === 'true') {
+      this.isResultSubmitted = true;
+    }
+  }
 }

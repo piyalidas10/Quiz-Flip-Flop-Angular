@@ -1,6 +1,6 @@
 <h6>{{serialno+1}}. {{data.question}}</h6>
             <ul>
               <li *ngFor="let ans of data.answers; let i = index;">
-                <input type="radio" name="answer{{serialno}}" value="{{ans}}" (click)="chooseAns(serialno, i)"> {{ans}}
+                <input type="radio" name="answer{{serialno}}" value="{{ans}}" [checked]="i===alreadychoosedans" (click)="chooseAns(serialno, i)"> {{ans}}
               </li>
             </ul>

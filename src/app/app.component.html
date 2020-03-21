@@ -1,4 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<h4 class="text-center">Flip Flop Quiz</h4>
-<p class="text-center">Click on the card</p>
-<app-quizhome></app-quizhome>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9 col-md-8 col-sm-7">
+            <h4>Flip Flop Quiz</h4>
+            <p>Click on the card</p>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-5">
+            <app-quizresult [isResultSubmitted]="isResultSubmitted"></app-quizresult>
+        </div>
+    </div>
+    <app-quizhome (isSubmitted)="checkIsSubmitted($event)"></app-quizhome>
+</div>

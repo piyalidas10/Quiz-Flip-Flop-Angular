@@ -1,6 +1,5 @@
-<div class="container">
   <div class="row">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 quiz{{i}}" *ngFor="let quiz of quizLists; let i = index;">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flip-card-wrapper quiz{{i}}" *ngFor="let quiz of quizLists; let i = index;">
       <div class="flip-card">
           <div class="flip-card-front" (click)="expandSection(i)">
             <div class="num">{{i+1}}</div>
@@ -11,4 +10,7 @@
       </div>
     </div>
   </div>
-</div>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-success" (click)="submitQuiz()">Submit Quiz</button>
+  </div>
+

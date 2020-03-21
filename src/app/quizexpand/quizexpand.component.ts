@@ -8,6 +8,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 export class QuizexpandComponent implements OnInit {
   @Input() data: any;
   @Input() serialno: number;
+  @Input() alreadychoosedans: number;
   @Output() chooseVal = new EventEmitter();
 
   constructor() { }

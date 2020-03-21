@@ -1,7 +1,10 @@
-import { ArrayType } from '@angular/compiler';
 
-export class Quiz {
+export class QuizModel {
+    public questions: Questions[];
+}
+
+export class Questions {
     question: string;
-    answers: ArrayType;
+    answers: Array<any>;
     correctIndex: number;
 }

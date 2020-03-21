@@ -9,4 +9,5 @@ ng generate class models/Quiz
 # Run Application
 ```
 ng serve
+localhost:4200/
 ```
