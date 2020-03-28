@@ -11,3 +11,5 @@ ng generate class models/Quiz
 ng serve
 localhost:4200/
 ```
+
+![Flipflop Quiz](screenshot.png)
