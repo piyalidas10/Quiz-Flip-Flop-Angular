@@ -1,17 +1,11 @@
-import { Component, OnInit, Directive, ViewContainerRef, ViewChildren, QueryList, ComponentFactoryResolver, ElementRef, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, Directive, ViewContainerRef, ViewChild, ViewChildren, QueryList,
+  ComponentFactoryResolver, ElementRef, Output, EventEmitter, AfterViewInit
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../services/api.service';
 import { QuizexpandComponent } from '../quizexpand/quizexpand.component';
 import { SharedService } from '../services/shared.service';
-
-@Directive({
-  // tslint:disable-next-line:directive-selector
-  selector: '[quizcontainer]',
-})
-export class QuizcontainerDirective {
-  constructor(public viewContainerRef: ViewContainerRef) {
-  }
-}
 
 @Component({
   selector: 'app-quizhome',
@@ -19,18 +13,21 @@ export class QuizcontainerDirective {
   styleUrls: ['./quizhome.component.css']
 })
 
-export class QuizhomeComponent implements OnInit {
+export class QuizhomeComponent implements OnInit, AfterViewInit {
   public quizLists: any;
   public quizAnsLists = [];
+  public startIndex = 0;
+  public quizCount = 0;
   @Output() isSubmitted = new EventEmitter();
+  public isSubmitBtnClicked = false;
+  public config = {};
+  myRef: any;
 
-  // @ViewChildren decorator to grab elements from the host view
-  /* The return type of ViewChildren is QueryList.
-  QueryList is just a fancy name for an object that stores
-  a list of items. What is special about this object is
-  when the state of the application changes Angular will
-  automatically update the object items for you. */
-  @ViewChildren(QuizcontainerDirective) entry: QueryList<QuizcontainerDirective>;
+  /*
+  It may be a better idea to use static:true if the child does not depend on any conditions.
+  If the visibility of element changes, then static:false may give better results.
+  */
+  @ViewChild('quizcontainer', { read: ViewContainerRef, static: true }) entry: ViewContainerRef;
 
   constructor(
     public apiService: ApiService,
@@ -39,9 +36,20 @@ export class QuizhomeComponent implements OnInit {
     private sharedSrv: SharedService
   ) {
     this.getDataLists();
+    this.setCOnfig();
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+
+  }
+
+  setCOnfig() {
+    this.config = {
+      allowBack: true
+    };
   }
 
   getDataLists() {
@@ -49,9 +57,10 @@ export class QuizhomeComponent implements OnInit {
       this.apiService.getData()
         .subscribe(
           data => {
-            this.quizLists = data['questions'];
+            this.quizLists = data.questions;
+            this.quizCount = this.quizLists.length;
             console.log('quizLists => ', this.quizLists);
-            const originalansLists = this.quizLists.map( ele => ele.correctIndex);
+            const originalansLists = this.quizLists.map(ele => ele.correctIndex);
             console.log('originalansLists => ', originalansLists);
             this.sharedSrv.setOriginalAnsLists(originalansLists);
           },
@@ -68,31 +77,36 @@ export class QuizhomeComponent implements OnInit {
     console.log('Question Ans => ', evt);
   }
 
+
   // ViewContainerRef — create templates or components dynamically
   openComponent(index) {
-    console.log(this.entry);
+    this.entry.clear();
+    console.log('openComponent entry => ', this.entry);
     const alreadyChoosedAns = this.showAlreadySelectedAns(index);
     console.log('alreadyChoosedAns => ', alreadyChoosedAns);
     const myFactory = this.resolver.resolveComponentFactory(QuizexpandComponent);
-    if (this.entry.toArray()[index].viewContainerRef.length <= 0) {
-      const myRef = this.entry.toArray()[index].viewContainerRef.createComponent(myFactory);
-      myRef.instance['data'] = this.quizLists[index];
-      myRef.instance['serialno'] = index;
-      myRef.instance['alreadychoosedans'] = alreadyChoosedAns;
-      myRef.instance['chooseVal'].subscribe(event => {
-        console.log('chooseVal => ', event);
-        this.checkDuplicateAns(event);
-      });
-      myRef.changeDetectorRef.detectChanges();
-    }
+    this.myRef = this.entry.createComponent(myFactory);
+    this.myRef.instance['data'] = this.quizLists[index];
+    this.myRef.instance['serialno'] = index;
+    this.myRef.instance['alreadychoosedans'] = alreadyChoosedAns;
+    this.myRef.instance['chooseVal'].subscribe(event => {
+      console.log('chooseVal => ', event);
+      this.checkDuplicateAns(event);
+    });
+    this.myRef.changeDetectorRef.detectChanges();
   }
 
   closeComponent(index) {
     console.log('close component', index);
-    this.entry.toArray()[index].viewContainerRef.remove();
+    console.log('this.myRef => ', this.myRef);
+    if (this.myRef !== undefined) {
+      this.myRef.destroy();
+    }
   }
 
   expandSection(index) {
+    console.log('index => ', index);
+    const alreadyChoosedAns = this.showAlreadySelectedAns(index);
     const expandElement = this.ele.nativeElement.querySelectorAll('.quiz' + index)[0];
     console.log('expandElement => ', expandElement);
     const rowElement = expandElement.parentElement;
@@ -146,7 +160,15 @@ export class QuizhomeComponent implements OnInit {
     console.log('quizAnsLists => ', this.quizAnsLists);
   }
 
-  public submitQuiz() {
+  goTo(currentIndex, gotoIndex) {
+    this.closeComponent(currentIndex);
+    this.startIndex = gotoIndex;
+    console.log('startIndex => ', this.startIndex);
+    this.openComponent(gotoIndex);
+  }
+
+  submitQuiz() {
+    this.isSubmitBtnClicked = true;
     this.sharedSrv.setQuizResult(this.quizAnsLists);
     console.log('quizAnsLists => ', this.quizAnsLists);
     this.isSubmitted.emit('true');
