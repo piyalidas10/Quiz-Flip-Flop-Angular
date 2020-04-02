@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'flipflop-one';
+  title = 'flipflop';
   public isResultSubmitted = false;
 
   checkIsSubmitted(evt) {

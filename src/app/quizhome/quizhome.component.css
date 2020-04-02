@@ -44,9 +44,3 @@
     transform: rotateY(180deg);
     padding: 15px;
   }
-  .btn {
-    margin-right: 10px;
-  }
-  .btn:last-child {
-    margin-right: 0;
-  }
