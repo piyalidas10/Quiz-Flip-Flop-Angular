@@ -1,4 +1,4 @@
-# flipflop-one Quiz game
+# flipflop Quiz game
 
 create an Interface class for Quiz data by running following command defining the type of values for quiz.
 
@@ -7,7 +7,7 @@ https://dzone.com/articles/how-to-dynamically-create-a-component-in-angular
 https://github.com/softgandhi/ng2-quiz/blob/master/src/app/quiz/quiz.component.ts
 
 # Live URL
-https://piyalidas10.github.io/flipflop-one-quiz/
+https://piyalidas10.github.io/flipflop-quiz/
 
 ```
 ng generate class models/Quiz
@@ -19,7 +19,7 @@ ng serve
 localhost:4200/
 ```
 
-![flipflop-one Quiz](screenshot.png)
+![flipflop Quiz](screenshot.png)
 
 # Dynamically Create a Component in Angular
 
