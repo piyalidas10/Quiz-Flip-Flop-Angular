@@ -1,16 +1,20 @@
   <div class="row">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 flip-card-wrapper quiz{{i}}" *ngFor="let quiz of quizLists; let i = index;">
+    <div class="col-12 flip-card-wrapper quiz{{startIndex}}">
       <div class="flip-card">
-          <div class="flip-card-front" (click)="expandSection(i)">
-            <div class="num">{{i+1}}</div>
+          <div class="flip-card-front" (click)="expandSection(startIndex)">
+            <div class="num">Question {{startIndex + 1}}</div>
           </div>
-          <div class="flip-card-back" (click)="closeSection(i)">
-              <ng-template quizcontainer></ng-template>
+          <div class="flip-card-back" (click)="closeSection(startIndex)">
+              <ng-template #quizcontainer>
+              </ng-template>
           </div>
       </div>
     </div>
   </div>
   <div class="form-group text-right">
-    <button type="button" class="btn btn-success" (click)="submitQuiz()">Submit Quiz</button>
+    <button class="btn btn-dark" *ngIf="config.allowBack" (click)="goTo(startIndex, 0)" [disabled]="startIndex === 0 || isSubmitBtnClicked">First</button>
+    <button class="btn btn-dark" *ngIf="config.allowBack" (click)="goTo(startIndex, startIndex - 1)" [disabled]="startIndex === 0 || isSubmitBtnClicked">Prev</button>
+    <button class="btn btn-primary" (click)="goTo(startIndex, startIndex + 1)" [disabled]="startIndex === quizCount - 1 || isSubmitBtnClicked">Next</button>
+    <button class="btn btn-dark" *ngIf="config.allowBack" (click)="goTo(startIndex, quizCount - 1)" [disabled]="startIndex === quizCount - 1 || isSubmitBtnClicked">Last</button>
+    <button class="btn btn-success" (click)="submitQuiz()" [disabled]="isSubmitBtnClicked">Submit Quiz</button>
   </div>
-

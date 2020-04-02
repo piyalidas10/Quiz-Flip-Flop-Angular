@@ -10,14 +10,14 @@ import { QuizexpandComponent } from './quizexpand/quizexpand.component';
 
 import { ApiService } from './services/api.service';
 
-import { QuizcontainerDirective } from './quizhome/quizhome.component';
+// import { QuizcontainerDirective } from './quizhome/quizhome.component';
 import { QuizresultComponent } from './quizresult/quizresult.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QuizhomeComponent,
-    QuizcontainerDirective,
+    // QuizcontainerDirective,
     QuizexpandComponent,
     QuizresultComponent
   ],
