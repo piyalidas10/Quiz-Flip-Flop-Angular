@@ -1,5 +1,5 @@
-import { Component, OnInit, Directive, ViewContainerRef, ViewChildren, QueryList, ComponentFactoryResolver, ElementRef, Output, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, Directive, ViewContainerRef, ViewChildren, QueryList, ComponentFactoryResolver, 
+  ElementRef, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { QuizexpandComponent } from '../quizexpand/quizexpand.component';
 import { SharedService } from '../services/shared.service';
@@ -50,7 +50,7 @@ export class QuizhomeComponent implements OnInit {
       this.apiService.getData()
         .subscribe(
           data => {
-            this.quizLists = data['questions'];
+            this.quizLists = data.questions;
             console.log('quizLists => ', this.quizLists);
             const originalansLists = this.quizLists.map( ele => ele.correctIndex);
             console.log('originalansLists => ', originalansLists);
@@ -77,10 +77,10 @@ export class QuizhomeComponent implements OnInit {
     const myFactory = this.resolver.resolveComponentFactory(QuizexpandComponent);
     if (this.entry.toArray()[index].viewContainerRef.length <= 0) {
       const myRef = this.entry.toArray()[index].viewContainerRef.createComponent(myFactory);
-      myRef.instance['data'] = this.quizLists[index];
-      myRef.instance['serialno'] = index;
-      myRef.instance['alreadychoosedans'] = alreadyChoosedAns;
-      myRef.instance['chooseVal'].subscribe(event => {
+      myRef.instance.data = this.quizLists[index];
+      myRef.instance.serialno = index;
+      myRef.instance.alreadychoosedans = alreadyChoosedAns;
+      myRef.instance.chooseVal.subscribe(event => {
         console.log('chooseVal => ', event);
         this.checkDuplicateAns(event);
       });
